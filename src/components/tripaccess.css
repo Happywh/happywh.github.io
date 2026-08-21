@@ -1,0 +1,261 @@
+/* =========================
+   TRIP ACCESS OVERLAY
+========================= */
+
+.trip-access-overlay {
+  position: fixed;
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(0, 0, 0, 0.35);
+
+  z-index: 1000;
+}
+
+
+/* =========================
+   MODAL
+========================= */
+
+.trip-access-modal {
+  width: 100%;
+  max-width: 520px;
+
+  padding: 30px;
+
+  border: 1px solid #dededb;
+  border-radius: 10px;
+
+  background: #f7f7f5;
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+.trip-access-label {
+  margin: 0 0 15px;
+
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+
+  color: #999;
+}
+
+.trip-access-modal h2 {
+  margin: 0 0 10px;
+
+  font-size: 30px;
+  letter-spacing: -1px;
+}
+
+.trip-access-description {
+  margin: 0 0 25px;
+
+  color: #777;
+
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+
+/* =========================
+   ADD EMAIL
+========================= */
+
+.trip-access-form {
+  display: flex;
+  gap: 10px;
+}
+
+.trip-access-form input,
+.trip-access-item input {
+  min-width: 0;
+  width: 100%;
+
+  padding: 13px 15px;
+
+  border: 1px solid #dededb;
+  border-radius: 6px;
+
+  background: transparent;
+
+  color: #171717;
+
+  font-family: inherit;
+  font-size: 14px;
+
+  outline: none;
+}
+
+.trip-access-form input:focus,
+.trip-access-item input:focus {
+  border-color: #999;
+  background: white;
+}
+
+.trip-access-form button {
+  padding: 13px 18px;
+
+  border: 1px solid #171717;
+  border-radius: 6px;
+
+  background: #171717;
+  color: white;
+
+  font-family: inherit;
+  font-size: 13px;
+
+  cursor: pointer;
+}
+
+.trip-access-form button:hover {
+  background: #333;
+}
+
+.trip-access-form button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+
+/* =========================
+   EMAIL LIST
+========================= */
+
+.trip-access-list {
+  margin-top: 25px;
+
+  border-top: 1px solid #dededb;
+}
+
+.trip-access-item {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  padding: 15px 0;
+
+  border-bottom: 1px solid #dededb;
+}
+
+.trip-access-item > span {
+  min-width: 0;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  color: #444;
+
+  font-size: 13px;
+}
+
+.trip-access-item > input {
+  flex: 1;
+}
+
+.trip-access-actions {
+  display: flex;
+  gap: 10px;
+
+  flex-shrink: 0;
+}
+
+.trip-access-actions button {
+  padding: 0;
+
+  border: 0;
+
+  background: transparent;
+
+  color: #999;
+
+  font-family: inherit;
+  font-size: 12px;
+
+  cursor: pointer;
+}
+
+.trip-access-actions button:hover {
+  color: #171717;
+}
+
+.trip-access-muted {
+  margin: 20px 0;
+
+  color: #999;
+
+  font-size: 13px;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.trip-access-footer {
+  display: flex;
+
+  justify-content: flex-end;
+
+  margin-top: 25px;
+}
+
+.trip-access-footer button {
+  padding: 11px 16px;
+
+  border: 1px solid #dededb;
+  border-radius: 6px;
+
+  background: transparent;
+
+  color: #555;
+
+  font-family: inherit;
+  font-size: 13px;
+
+  cursor: pointer;
+}
+
+.trip-access-footer button:hover {
+  background: white;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 700px) {
+
+  .trip-access-modal {
+    padding: 25px;
+  }
+
+  .trip-access-form {
+    flex-direction: column;
+  }
+
+  .trip-access-form button {
+    width: 100%;
+  }
+
+  .trip-access-item {
+    align-items: flex-start;
+  }
+
+  .trip-access-item > span {
+    flex: 1;
+    word-break: break-word;
+  }
+
+}

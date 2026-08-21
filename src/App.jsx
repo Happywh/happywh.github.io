@@ -315,7 +315,7 @@ function App() {
 
         <Route path="/tools/reconciliator" element={<Reconciliator />} />
 
-        <Route path="/reconciliator/:tripId" element={<ReconciliatorTrip />}/>
+        <Route path="/tools/reconciliator/:tripId" element={<ReconciliatorTrip />}/>
 
       </Routes>
     </BrowserRouter>
