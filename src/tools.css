@@ -1,0 +1,183 @@
+.tools-page {
+  min-height: 100vh;
+  background: #f7f7f5;
+  color: #171717;
+
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  padding: 80px 30px 120px;
+}
+
+.tools-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.tools-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  text-align: center;
+
+  padding-bottom: 70px;
+}
+
+.tools-eyebrow {
+  margin: 0 0 18px;
+
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+
+  color: #999;
+}
+
+.tools-title {
+  margin: 0;
+
+  font-size: clamp(60px, 9vw, 100px);
+  line-height: 0.95;
+  letter-spacing: -5px;
+  font-weight: 750;
+}
+
+.tools-description {
+  max-width: 500px;
+
+  margin: 25px auto 0;
+
+  color: #777;
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.tools-back {
+  margin-top: 25px;
+
+  color: #999;
+  font-size: 13px;
+
+  transition: color 0.2s ease;
+}
+
+.tools-back:hover {
+  color: #171717;
+}
+
+
+/* =========================
+   TOOLS
+========================= */
+
+.tools-list {
+  border-top: 1px solid #dededb;
+}
+
+.tool {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  text-align: center;
+
+  padding: 40px 20px;
+
+  border-bottom: 1px solid #dededb;
+}
+
+.tool-number {
+  margin-bottom: 12px;
+
+  color: #aaa;
+  font-size: 13px;
+}
+
+.tool-content {
+  max-width: 600px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tool-content h2 {
+  margin: 0 0 10px;
+
+  font-size: 22px;
+  letter-spacing: -0.5px;
+}
+
+.tool-content p {
+  margin: 0;
+
+  color: #777;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.tool-button {
+  margin-top: 20px;
+
+  padding: 10px 16px;
+
+  border: 1px solid #dededb;
+  border-radius: 6px;
+
+  background: transparent;
+  color: #171717;
+
+  font-family: inherit;
+  font-size: 12px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.tool-button:hover {
+  background: #171717;
+  border-color: #171717;
+  color: white;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 700px) {
+  .tools-page {
+    padding: 60px 20px 100px;
+  }
+
+  .tools-header {
+    padding-bottom: 50px;
+  }
+
+  .tools-title {
+    font-size: 64px;
+    letter-spacing: -4px;
+  }
+
+  .tools-description {
+    font-size: 16px;
+  }
+
+  .tool {
+    padding: 30px 15px;
+  }
+}

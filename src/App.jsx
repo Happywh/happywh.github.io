@@ -1,22 +1,132 @@
+import { useEffect, useState } from 'react'
+import { supabase } from './lib/supabase'
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import './App.css'
+import Login from './Login'
+import Register from './Register'
+import Tools from './Tools'
 
-function App() {
+function Home() {
+  const [user, setUser] = useState(null)
+  const [siteContent, setSiteContent] = useState({})
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function loadContent() {
+      const { data, error } = await supabase
+        .from('site_content')
+        .select('*')
+
+      if (error) {
+        console.error('Error loading site content:', error)
+        setLoading(false)
+        return
+      }
+
+      console.log('Supabase data:', data)
+
+      const content = {}
+
+      data.forEach((item) => {
+        content[item.section] = item
+      })
+
+      console.log('Formatted content:', content)
+
+      setSiteContent(content)
+      setLoading(false)
+    }
+
+    loadContent()
+  }, [])
+  
+  useEffect(() => { //to display user after login
+    async function getUser() {
+      const {
+        data: { user }
+      } = await supabase.auth.getUser()
+
+      setUser(user)
+    }
+
+    getUser()
+
+    const {
+      data: { subscription }
+    } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setUser(session?.user ?? null)
+      }
+    )
+
+    return () => {
+      subscription.unsubscribe()
+    }
+    }, [])
+
+  async function handleLogout() {
+    const { error } = await supabase.auth.signOut()
+
+    if (error) {
+      console.error('Logout error:', error)
+    }
+  }
+
+  if (loading) {
+    return <div>Loading...</div>
+  }
+
   return (
     <div className="site">
 
       {/* Navigation */}
       <nav className="navbar">
-        <div className="nav-name">Your Name</div>
+        <div className="nav-name">
+          {siteContent.hero?.title}
+        </div>
 
         <div className="nav-links">
-          <a href="#about">About</a>
-          <a href="#work">Work</a>
-          <a href="#contact">Contact</a>
 
-          {/* The Easter egg */}
-          <a href="/login" className="login-link">
-            Login
+          <a href="#about">
+            About
           </a>
+
+          <a href="#work">
+            Work
+          </a>
+
+          <a href="#contact">
+            Contact
+          </a>
+
+          {user ? (
+            <>
+              <span className="login-link">
+                Welcome, {user.email.split('@')[0]}
+              </span>
+
+              <Link
+                to="/tools"
+                className="login-link"
+              >
+                Tools
+              </Link>
+
+              <button
+                onClick={handleLogout}
+                className="logout-button"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <Link
+              to="/login"
+              className="login-link"
+            >
+              Login
+            </Link>
+          )}
         </div>
       </nav>
 
@@ -32,7 +142,7 @@ function App() {
             </p>
 
             <h1>
-              Your Name
+              {siteContent.hero.title}
             </h1>
 
             <p className="subtitle">
@@ -185,6 +295,24 @@ function App() {
       </footer>
 
     </div>
+  )
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+
+        <Route path="/" element={<Home />} />
+
+        <Route path="/login" element={<Login />} />
+
+        <Route path="/register" element={<Register />} />
+
+        <Route path="/tools" element={<Tools />} />
+
+      </Routes>
+    </BrowserRouter>
   )
 }
 
