@@ -32,23 +32,28 @@ function Tools() {
         <div className="tools-list">
 
           <div className="tool">
-            <div className="tool-number">
-              01
-            </div>
+          <div className="tool-number">
+            01
+          </div>
 
-            <div className="tool-content">
-              <h2>
-                Tool One
-              </h2>
+          <div className="tool-content">
+            <h2>
+              Travel Calculator
+            </h2>
 
-              <p>
-                A short description of what this tool does.
-              </p>
+            <p>
+              Split trip expenses and calculate who owes who
+              at the end of a trip.
+            </p>
 
-              <button className="tool-button">
-                Open →
-              </button>
-            </div>
+            <Link
+              to="/tools/reconciliator"
+              className="tool-button"
+            >
+              Open →
+            </Link>
+
+          </div>
           </div>
 
           <div className="tool">

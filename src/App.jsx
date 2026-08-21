@@ -5,6 +5,8 @@ import './App.css'
 import Login from './Login'
 import Register from './Register'
 import Tools from './Tools'
+import Reconciliator from './Reconciliator'
+import ReconciliatorTrip from './ReconciliatorTrip'
 
 function Home() {
   const [user, setUser] = useState(null)
@@ -310,6 +312,10 @@ function App() {
         <Route path="/register" element={<Register />} />
 
         <Route path="/tools" element={<Tools />} />
+
+        <Route path="/tools/reconciliator" element={<Reconciliator />} />
+
+        <Route path="/reconciliator/:tripId" element={<ReconciliatorTrip />}/>
 
       </Routes>
     </BrowserRouter>
