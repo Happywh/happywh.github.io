@@ -181,3 +181,42 @@
     padding: 30px 15px;
   }
 }
+
+.tools-header-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.special-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 8px 12px;
+
+  border: 1px solid #dededb;
+  border-radius: 6px;
+
+  background: transparent;
+  color: #999;
+
+  text-decoration: none;
+  font-family: inherit;
+  font-size: 13px;
+
+  opacity: 0.8;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.special-button:hover {
+  background: #171717;
+  border-color: #171717;
+  color: white;
+  opacity: 1;
+}

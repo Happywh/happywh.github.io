@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import { supabase } from './lib/supabase'
 import './Reconciliator.css'
@@ -43,261 +43,206 @@ function ReconciliatorTrip() {
      LOAD TRIP
   ========================= */
 
-  useEffect(() => {
+  const loadTrip = useCallback(async () => {
 
-    async function loadTrip() {
+    setLoading(true)
 
-      setLoading(true)
+    // =========================
+    // CHECK USER
+    // =========================
 
-      /* =========================
-        CHECK USER
-      ========================= */
+    const {
+      data: { user },
+      error: userError
+    } = await supabase.auth.getUser()
 
-      const {
-        data: {
-          user
-        },
-        error: userError
-      } = await supabase.auth.getUser()
+    if (userError || !user || !user.email) {
 
-      if (userError || !user || !user.email) {
-
-        console.error(
-          'User is not authenticated:',
-          userError
-        )
-
-        setLoading(false)
-        navigate('/tools/reconciliator')
-
-        return
-      }
-
-      const userEmail =
-        user.email.trim().toLowerCase()
-
-
-      /* =========================
-        LOAD TRIP
-      ========================= */
-
-      const {
-        data: trip,
-        error: tripError
-      } = await supabase
-        .from('trips')
-        .select('name, creator_email')
-        .eq('id', tripId)
-        .single()
-
-      if (tripError) {
-
-        console.error(
-          'Error loading trip:',
-          tripError
-        )
-
-        setLoading(false)
-        navigate('/tools/reconciliator')
-
-        return
-      }
-
-
-      /* =========================
-        CHECK TRIP ACCESS
-      ========================= */
-
-      const {
-        data: access,
-        error: accessError
-      } = await supabase
-        .from('trip_access')
-        .select('id, email')
-        .eq('trip_id', tripId)
-
-      if (accessError) {
-
-        console.error(
-          'Error checking trip access:',
-          accessError
-        )
-
-        setLoading(false)
-        navigate('/tools/reconciliator')
-
-        return
-      }
-
-
-      const hasAccess =
-        (access || []).some(
-          item =>
-            item.email?.trim().toLowerCase() ===
-            userEmail
-        ) ||
-        trip.creator_email?.trim().toLowerCase() ===
-          userEmail
-
-
-      console.log(
-        'Logged in email:',
-        userEmail
+      console.error(
+        'User is not authenticated:',
+        userError
       )
-
-      console.log(
-        'Trip creator:',
-        trip.creator_email
-      )
-
-      console.log(
-        'Trip access records:',
-        access
-      )
-
-      console.log(
-        'Has access:',
-        hasAccess
-      )
-
-
-      /* =========================
-        DENY ACCESS
-      ========================= */
-
-      if (!hasAccess) {
-
-        alert(
-          'You do not have access to this trip.'
-        )
-
-        setLoading(false)
-
-        navigate('/tools/reconciliator')
-
-        return
-      }
-
-
-      /* =========================
-        SET TRIP NAME
-      ========================= */
-
-      setTripName(trip.name)
-
-
-      /* =========================
-        LOAD PEOPLE
-      ========================= */
-
-      const {
-        data: peopleData,
-        error: peopleError
-      } = await supabase
-        .from('trip_people')
-        .select('id, name')
-        .eq('trip_id', tripId)
-        .order('created_at', {
-          ascending: true
-        })
-
-
-      if (peopleError) {
-
-        console.error(
-          'Error loading people:',
-          peopleError
-        )
-
-        setLoading(false)
-
-        return
-      }
-
-
-      setPeople(
-        peopleData || []
-      )
-
-
-      /* =========================
-        LOAD EXPENSES
-      ========================= */
-
-      const {
-        data: expenseData,
-        error: expenseError
-      } = await supabase
-        .from('expenses')
-        .select(`
-          id,
-          description,
-          amount,
-          paid_by,
-          expense_people (
-            person_id
-          )
-        `)
-        .eq('trip_id', tripId)
-        .order('created_at', {
-          ascending: true
-        })
-
-
-      if (expenseError) {
-
-        console.error(
-          'Error loading expenses:',
-          expenseError
-        )
-
-      } else {
-
-        const formattedExpenses =
-          (expenseData || []).map(
-            expense => ({
-
-              id: expense.id,
-
-              description:
-                expense.description,
-
-              amount:
-                Number(expense.amount),
-
-              paidBy:
-                expense.paid_by,
-
-              splitBetween:
-                (expense.expense_people || []).map(
-                  person =>
-                    person.person_id
-                )
-
-            })
-          )
-
-        setExpenses(
-          formattedExpenses
-        )
-      }
-
-
-      /* =========================
-        COMPLETE
-      ========================= */
 
       setLoading(false)
+      navigate('/tools/reconciliator')
 
-      console.log(
-        'LOAD TRIP COMPLETE'
+      return
+    }
+
+    const userEmail =
+      user.email.trim().toLowerCase()
+
+
+    // =========================
+    // LOAD TRIP
+    // =========================
+
+    const {
+      data: trip,
+      error: tripError
+    } = await supabase
+      .from('trips')
+      .select('name, creator_email')
+      .eq('id', tripId)
+      .single()
+
+    if (tripError) {
+
+      console.error(
+        'Error loading trip:',
+        tripError
       )
+
+      setLoading(false)
+      navigate('/tools/reconciliator')
+
+      return
     }
 
 
-    loadTrip()
+    // =========================
+    // CHECK ACCESS
+    // =========================
+
+    const {
+      data: access,
+      error: accessError
+    } = await supabase
+      .from('trip_access')
+      .select('id, email')
+      .eq('trip_id', tripId)
+
+    if (accessError) {
+
+      console.error(
+        'Error checking trip access:',
+        accessError
+      )
+
+      setLoading(false)
+      navigate('/tools/reconciliator')
+
+      return
+    }
+
+    const hasAccess =
+      access?.some(
+        item =>
+          item.email?.trim().toLowerCase() ===
+          userEmail
+      ) ||
+      trip.creator_email?.trim().toLowerCase() ===
+        userEmail
+
+    if (!hasAccess) {
+
+      alert(
+        'You do not have access to this trip.'
+      )
+
+      setLoading(false)
+      navigate('/tools/reconciliator')
+
+      return
+    }
+
+    setTripName(trip.name)
+
+
+    // =========================
+    // LOAD PEOPLE
+    // =========================
+
+    const {
+      data: peopleData,
+      error: peopleError
+    } = await supabase
+      .from('trip_people')
+      .select('id, name')
+      .eq('trip_id', tripId)
+      .order('created_at', {
+        ascending: true
+      })
+
+    if (peopleError) {
+
+      console.error(
+        'Error loading people:',
+        peopleError
+      )
+
+      setLoading(false)
+      return
+    }
+
+    setPeople(peopleData || [])
+
+
+    // =========================
+    // LOAD EXPENSES
+    // =========================
+
+    const {
+      data: expenseData,
+      error: expenseError
+    } = await supabase
+      .from('expenses')
+      .select(`
+        id,
+        description,
+        amount,
+        paid_by,
+        expense_people (
+          person_id
+        )
+      `)
+      .eq('trip_id', tripId)
+      .order('created_at', {
+        ascending: true
+      })
+
+    if (expenseError) {
+
+      console.error(
+        'Error loading expenses:',
+        expenseError
+      )
+
+    } else {
+
+      const formattedExpenses =
+        (expenseData || []).map(expense => ({
+          id: expense.id,
+          description: expense.description,
+          amount: Number(expense.amount),
+          paidBy: expense.paid_by,
+
+          splitBetween:
+            expense.expense_people.map(
+              person =>
+                person.person_id
+            )
+        }))
+
+      setExpenses(formattedExpenses)
+    }
+
+
+    // =========================
+    // COMPLETE
+    // =========================
+
+    setLoading(false)
+
+    console.log(
+      'LOAD TRIP COMPLETE'
+    )
 
   }, [tripId, navigate])
+
+  useEffect(() => {
+    loadTrip()
+  }, [loadTrip])
 
   /* =========================
      PEOPLE
@@ -1424,6 +1369,8 @@ function ReconciliatorTrip() {
 
                 // Then delete
                 await removePerson(personId)
+
+                await loadTrip()
 
               }}
             >

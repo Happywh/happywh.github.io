@@ -7,6 +7,7 @@ import Register from './Register'
 import Tools from './Tools'
 import Reconciliator from './Reconciliator'
 import ReconciliatorTrip from './ReconciliatorTrip'
+import Moment from './Moment'
 
 function Home() {
   const [user, setUser] = useState(null)
@@ -25,15 +26,11 @@ function Home() {
         return
       }
 
-      console.log('Supabase data:', data)
-
       const content = {}
 
       data.forEach((item) => {
         content[item.section] = item
       })
-
-      console.log('Formatted content:', content)
 
       setSiteContent(content)
       setLoading(false)
@@ -316,6 +313,8 @@ function App() {
         <Route path="/tools/reconciliator" element={<Reconciliator />} />
 
         <Route path="/tools/reconciliator/:tripId" element={<ReconciliatorTrip />}/>
+
+        <Route path="/tools/moment" element={<Moment />} />
 
       </Routes>
     </BrowserRouter>

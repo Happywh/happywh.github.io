@@ -9,76 +9,90 @@ function TripAccess({ trip, onClose }) {
   const [loading, setLoading] = useState(false)
   const [creatorEmail, setCreatorEmail] = useState('')
 
+  /* =========================
+     LOAD ACCESS
+  ========================= */
+
   useEffect(() => {
 
     if (!trip) return
 
     async function loadAccess() {
-        setLoading(true)
 
-        /* =========================
-        LOAD CREATOR EMAIL
-        ========================= */
+      setLoading(true)
 
-        const {
+      /* =========================
+         LOAD CREATOR EMAIL
+      ========================= */
+
+      const {
         data: tripData,
         error: tripError
-        } = await supabase
+      } = await supabase
         .from('trips')
         .select('creator_email')
         .eq('id', trip.id)
         .single()
 
-        if (tripError) {
+      if (tripError) {
 
         console.error(
-            'Error loading creator email:',
-            tripError
+          'Error loading creator email:',
+          tripError
         )
 
-        } else {
+        setLoading(false)
+        return
+      }
 
-        setCreatorEmail(
-            tripData.creator_email
-            ?.trim()
-            .toLowerCase() || ''
-        )
-        }
+      const creator =
+        tripData.creator_email
+          ?.trim()
+          .toLowerCase() || ''
+
+      setCreatorEmail(creator)
 
 
-        /* =========================
-        LOAD ACCESS EMAILS
-        ========================= */
+      /* =========================
+         LOAD ADDITIONAL ACCESS
+      ========================= */
 
-        const {
+      const {
         data,
         error
-        } = await supabase
+      } = await supabase
         .from('trip_access')
         .select('id, email')
         .eq('trip_id', trip.id)
         .order('created_at', {
-            ascending: true
+          ascending: true
         })
 
-        if (error) {
+      if (error) {
 
         console.error(
-            'Error loading trip access:',
-            error
+          'Error loading trip access:',
+          error
         )
 
-        } else {
+        setEmails([])
+
+      } else {
 
         setEmails(data || [])
-        }
+      }
 
-        setLoading(false)
+      setLoading(false)
     }
 
     loadAccess()
 
-    }, [trip])
+  }, [trip])
+
+
+  /* =========================
+     ADD EMAIL
+  ========================= */
 
   async function addEmail(e) {
 
@@ -90,11 +104,57 @@ function TripAccess({ trip, onClose }) {
     if (!email) return
 
     if (!email.includes('@')) {
-      alert('Please enter a valid email address.')
+
+      alert(
+        'Please enter a valid email address.'
+      )
+
       return
     }
 
-    const { data, error } = await supabase
+
+    /* =========================
+       CHECK CREATOR
+    ========================= */
+
+    if (email === creatorEmail) {
+
+      alert(
+        'This email is already the creator of the trip.'
+      )
+
+      return
+    }
+
+
+    /* =========================
+       CHECK DUPLICATE
+    ========================= */
+
+    const alreadyExists =
+      emails.some(
+        item =>
+          item.email.trim().toLowerCase() === email
+      )
+
+    if (alreadyExists) {
+
+      alert(
+        'This email already has access.'
+      )
+
+      return
+    }
+
+
+    /* =========================
+       INSERT
+    ========================= */
+
+    const {
+      data,
+      error
+    } = await supabase
       .from('trip_access')
       .insert({
         trip_id: trip.id,
@@ -115,6 +175,7 @@ function TripAccess({ trip, onClose }) {
       return
     }
 
+
     setEmails(prev => [
       ...prev,
       data
@@ -123,6 +184,10 @@ function TripAccess({ trip, onClose }) {
     setNewEmail('')
   }
 
+
+  /* =========================
+     DELETE EMAIL
+  ========================= */
 
   async function deleteEmail(id) {
 
@@ -151,12 +216,44 @@ function TripAccess({ trip, onClose }) {
   }
 
 
+  /* =========================
+     NO TRIP
+  ========================= */
+
   if (!trip) {
     return null
   }
 
 
+  /* =========================
+     DISPLAY EMAILS
+  ========================= */
+
+  const displayEmails = [
+    ...(creatorEmail
+      ? [
+          {
+            id: 'creator',
+            email: creatorEmail,
+            isCreator: true
+          }
+        ]
+      : []
+    ),
+
+    ...emails.map(item => ({
+      ...item,
+      isCreator: false
+    }))
+  ]
+
+
+  /* =========================
+     RENDER
+  ========================= */
+
   return (
+
     <div
       className="trip-access-overlay"
       onClick={onClose}
@@ -183,6 +280,10 @@ function TripAccess({ trip, onClose }) {
         </p>
 
 
+        {/* =========================
+            ADD EMAIL
+        ========================= */}
+
         <form
           className="trip-access-form"
           onSubmit={addEmail}
@@ -206,6 +307,10 @@ function TripAccess({ trip, onClose }) {
         </form>
 
 
+        {/* =========================
+            EMAIL LIST
+        ========================= */}
+
         <div className="trip-access-list">
 
           {loading ? (
@@ -214,7 +319,7 @@ function TripAccess({ trip, onClose }) {
               Loading...
             </p>
 
-          ) : emails.length === 0 ? (
+          ) : displayEmails.length === 0 ? (
 
             <p className="trip-access-muted">
               No emails have access yet.
@@ -222,35 +327,49 @@ function TripAccess({ trip, onClose }) {
 
           ) : (
 
-            emails.map(item => (
+            displayEmails.map(item => (
 
               <div
                 className="trip-access-item"
                 key={item.id}
-                >
+              >
+
                 <span>
-                    {item.email}
+                  {item.email}
                 </span>
 
-                {item.email.trim().toLowerCase() === creatorEmail ? (
-                    <span className="trip-access-owner">
+
+                {item.isCreator ? (
+
+                  <span className="trip-access-owner">
                     Creator
-                    </span>
+                  </span>
+
                 ) : (
-                    <button
+
+                  <button
                     type="button"
                     onClick={() =>
-                        deleteEmail(item.id)
+                      deleteEmail(item.id)
                     }
-                    >
+                  >
                     ×
-                    </button>
+                  </button>
+
                 )}
-                </div>
+
+              </div>
+
             ))
+
           )}
 
         </div>
+
+
+        {/* =========================
+            FOOTER
+        ========================= */}
 
         <div className="trip-access-footer">
 

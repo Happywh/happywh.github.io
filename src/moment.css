@@ -1,0 +1,405 @@
+.moment-page {
+  min-height: 100vh;
+  background: #f9f3ed;
+  color: #3a2925;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  overflow: hidden;
+  position: relative;
+}
+
+.moment-container {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 100px 30px 100px;
+}
+
+
+/* =========================
+   DECORATIVE MARKS
+========================= */
+
+.accent-mark {
+  position: absolute;
+  color: #c58b82;
+  font-size: 30px;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.mark-one {
+  top: 12%;
+  left: 10%;
+  transform: rotate(-15deg);
+}
+
+.mark-two {
+  top: 28%;
+  right: 9%;
+  transform: rotate(15deg);
+  font-size: 22px;
+}
+
+.mark-three {
+  top: 65%;
+  left: 7%;
+  transform: rotate(-10deg);
+  font-size: 18px;
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.moment-hero {
+  text-align: center;
+  padding-bottom: 100px;
+}
+
+.shiba {
+  font-size: 64px;
+  margin-bottom: 30px;
+
+  animation: shiba-float 4s ease-in-out infinite;
+}
+
+@keyframes shiba-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-2deg);
+  }
+
+  50% {
+    transform: translateY(-8px) rotate(2deg);
+  }
+}
+
+.moment-eyebrow {
+  margin: 0 0 22px;
+
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+
+  color: #b47b72;
+}
+
+.moment-title {
+  margin: 0;
+
+  font-size: clamp(76px, 13vw, 130px);
+  line-height: 0.82;
+  letter-spacing: -7px;
+  font-weight: 700;
+
+  color: #3a2925;
+}
+
+.moment-subtitle {
+  margin: 35px 0 0;
+
+  font-size: 18px;
+  color: #92736c;
+}
+
+.moment-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+
+  margin-top: 45px;
+
+  color: #c58b82;
+  font-size: 20px;
+}
+
+.moment-divider::before,
+.moment-divider::after {
+  content: "";
+  width: 55px;
+  height: 1px;
+  background: #dfc9c3;
+}
+
+
+/* =========================
+   MESSAGE
+========================= */
+
+.moment-message {
+  max-width: 560px;
+  margin: 0 auto;
+
+  text-align: center;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 20px;
+  line-height: 1.9;
+
+  color: #614943;
+}
+
+.moment-message p {
+  margin: 0 0 25px;
+}
+
+.moment-message .message-intro {
+  color: #94766f;
+}
+
+.message-highlight {
+  margin-top: 45px !important;
+
+  font-size: 27px;
+  font-style: italic;
+
+  color: #9d5f57;
+}
+
+
+/* =========================
+   SHIBA
+========================= */
+
+.shiba-section {
+  margin: 110px 0;
+}
+
+.shiba-card {
+  display: flex;
+  align-items: center;
+  gap: 35px;
+
+  padding: 45px;
+
+  background: #fffaf7;
+  border: 1px solid #eadbd5;
+  border-radius: 18px;
+
+  box-shadow:
+    0 20px 50px rgba(87, 55, 46, 0.06);
+}
+
+.shiba-drawing {
+  flex-shrink: 0;
+
+  width: 120px;
+  height: 120px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #f3dfd4;
+
+  font-size: 65px;
+}
+
+.shiba-text {
+  text-align: left;
+}
+
+.shiba-small {
+  display: block;
+
+  margin-bottom: 10px;
+
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+
+  color: #b47b72;
+}
+
+.shiba-text h2 {
+  margin: 0 0 12px;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 28px;
+  font-weight: 500;
+}
+
+.shiba-text p {
+  margin: 0;
+
+  color: #80655e;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+
+/* =========================
+   ENDING
+========================= */
+
+.moment-ending {
+  text-align: center;
+  padding: 50px 0 30px;
+}
+
+.ending-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+
+  margin-bottom: 40px;
+}
+
+.ending-line span:first-child,
+.ending-line span:last-child {
+  width: 70px;
+  height: 1px;
+  background: #dfc9c3;
+}
+
+.ending-line span:nth-child(2) {
+  color: #b47b72;
+  font-size: 18px;
+}
+
+.ending-small {
+  margin: 0 0 20px;
+
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 3px;
+
+  color: #b47b72;
+}
+
+.moment-ending h2 {
+  margin: 0;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: clamp(40px, 7vw, 64px);
+  line-height: 1.1;
+  font-weight: 400;
+
+  color: #3a2925;
+}
+
+.moment-ending > p:not(.ending-small):not(.signoff) {
+  margin-top: 25px;
+
+  color: #92736c;
+}
+
+.ending-shiba {
+  margin-top: 40px;
+  font-size: 55px;
+}
+
+.signoff {
+  margin-top: 20px;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-style: italic;
+  color: #a17c74;
+}
+
+
+/* =========================
+   BACK
+========================= */
+
+.moment-back {
+  text-align: center;
+  margin-top: 80px;
+}
+
+.moment-back button {
+  border: none;
+  background: transparent;
+
+  color: #a38a84;
+
+  font-family: inherit;
+  font-size: 12px;
+
+  cursor: pointer;
+
+  transition: color 0.2s ease;
+}
+
+.moment-back button:hover {
+  color: #3a2925;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 700px) {
+
+  .moment-container {
+    padding: 70px 22px 80px;
+  }
+
+  .moment-hero {
+    padding-bottom: 70px;
+  }
+
+  .moment-title {
+    letter-spacing: -5px;
+  }
+
+  .moment-subtitle {
+    font-size: 16px;
+  }
+
+  .moment-message {
+    font-size: 18px;
+  }
+
+  .shiba-section {
+    margin: 80px 0;
+  }
+
+  .shiba-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 35px 25px;
+  }
+
+  .shiba-text {
+    text-align: center;
+  }
+
+  .shiba-drawing {
+    width: 100px;
+    height: 100px;
+    font-size: 55px;
+  }
+
+  .accent-mark {
+    display: none;
+  }
+}
